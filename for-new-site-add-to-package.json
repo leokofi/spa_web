@@ -1,0 +1,89 @@
+ 
+      {
+        "app_id": "app-mit",
+        "css_make_matrix": {
+          "do_vendor": true
+        },
+        "js_make_matrix": {
+          "asset_list": [
+            {
+              "bundle_key_list": [
+                "xhi_js_list"
+              ]
+            },
+            "js/mit.00_root.js",
+            "js/mit.01_util.js",
+            "js/mit.02_data.js",
+            "js/mit.03_model.js",
+            "js/mit.04_utilb.js",
+            "js/mit.05_css_base.js",
+            "js/mit.05_css_lb.js",
+            "js/mit.06_css.js",
+            "js/mit.06_lb.js",
+            "js/mit.07_shell.js",
+            "js/mit.08_app-build.js"
+          ],
+          "do_vendor": true
+        },
+        "path_copy_matrix": {
+          "asset_list": [
+            {
+              "bundle_key_list": [
+                "font_deploy_list"
+              ]
+            },
+            [
+              "template/app-mit.html",
+              "/",
+              false
+            ],
+            [
+              "img/hi_score.png",
+              null,
+              false
+            ],
+            [
+              "sound",
+              null,
+              true
+            ]
+          ]
+        }
+      },
+
+ {
+        "app_id": "app-chobits",
+        "css_make_matrix": {
+          "do_vendor": true
+        },
+        "js_make_matrix": {
+          "asset_list": [
+            {
+              "bundle_key_list": [
+                "xhi_js_list"
+              ]
+            },
+            "js/chobits-08_app-build.js"
+          ],
+          "do_vendor": true
+        },
+        "path_copy_matrix": {
+          "asset_list": [
+            {
+              "bundle_key_list": [
+                "font_deploy_list"
+              ]
+            },
+            [
+              "template/app-chobits.html",
+              "/",
+              false
+            ],
+            [
+              "img/hi_score.png",
+              null,
+              false
+            ]
+          ]
+        }
+      }
