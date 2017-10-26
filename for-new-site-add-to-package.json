@@ -54,6 +54,16 @@
  {
         "app_id": "app-chobits",
         "css_make_matrix": {
+            "asset_list": [
+            {
+              "bundle_key_list": [
+                "xhi_css_list"
+              ]
+            },
+            "css/chobits.main.css",
+            "css/chobits.mobile.css"
+          ],   
+        ,    
           "do_vendor": true
         },
         "js_make_matrix": {
@@ -63,6 +73,7 @@
                 "xhi_js_list"
               ]
             },
+            "js/chobits-00_root.js"  
             "js/chobits-08_app-build.js"
           ],
           "do_vendor": true

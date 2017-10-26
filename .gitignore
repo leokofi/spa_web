@@ -16,4 +16,5 @@ node_modules
 npm-debug.log
 lib/xhi_state.json
 package-lock.json
-
+for-new-site-add-to-package.json
+*.*~

@@ -49,7 +49,7 @@
         '<p><strong>hi_score</strong> appears to be properly installed!</p>'
       + '<p>The hi_score application map (app_map) attributes are as '
       + 'follows: <br>' + Object.keys( app_map ).join('<br>')
-      + '</p><p>Drag the title bar to move this lightbox.</p>'
+      + '</p><p>Drag the title bar to move this lightbox. Leo.. Leo... Leo...</p>'
     });
   }
 

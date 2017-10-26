@@ -692,7 +692,7 @@
                 "xhi_js_list"
               ]
             },
-            "js/ex01-08_app-build.js"
+            "js/ex01.08_app-build.js"
           ],
           "do_vendor": true
         },
@@ -728,7 +728,7 @@
                 "xhi_js_list"
               ]
             },
-            "js/ex02-08_app-build.js"
+            "js/ex02.08_app-build.js"
           ],
           "do_vendor": true
         },
@@ -866,7 +866,7 @@
                 "xhi_js_list"
               ]
             },
-            "js/chobits-08_app-build.js"
+            "js/chobits.08_app-build.js"
           ],
           "do_vendor": true
         },
