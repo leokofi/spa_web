@@ -21,7 +21,7 @@
 
 ---
 ## Quick start
-Download the latest [latest virual appliance][_42] to try `hi_score` with the minimum of time and hassle. Pick the latest `ova2` image for virutal box, and the latest `vmx.zip` image for VMware or Parallels. If you need more help with installing a VM or wish to consider other options, please consult the [Development platform](#development-platform) section.
+Download the latest [latest virual appliance][_42] to try `hi_score` with the minimum of time and hassle. Pick the latest `ova2` image for virutal box, and the latest `vmx.zip` image for VMware or Parallels. The login and password are `hi_score`. Please do change the password after signing in. If you need more help with installing a VM or wish to consider other options, please consult the [Development platform](#development-platform) section.
 
 ![virual_appliance][_0E]
 
@@ -325,9 +325,17 @@ Other Linux distributions should generally work as long as the same libraries ca
 See [this guide][_06] for NodeJS package installation on other Linux distros. Here is a more [generic guide][_07] for Kubuntu and Ubuntu.
 
 ### Mac
-The easiest way path to get familiar with this project on Mac is probably to use a product like Parallels or VMFusion to import the [vmx.zip][_42] (unzip this file before use). VirtualBox also runs on Mac but it doesn't integrate as well to the host OS as these products.
+We found Mac High Sierra worked after the following steps:
 
-One should be able to run development natively on the Mac but with some effort. We would need at the very least Bash 4+, [GNU Core utilities][_08], NodeJS, Git, PanDoc, Perl File::Slurp, and SSH server.
+1. Install NodeJS 8+
+
+2. Install pandoc
+
+```
+brew install pandoc
+```
+
+Another path is to use Parallels or VMFusion to import the [vmx.zip][_42] (unzip this file before use). VirtualBox also will work but doesn't integrate as well to OSX as these products.
 
 ### Windows
 We recommend using a virtual machine as detailed above.
@@ -566,10 +574,11 @@ MIT
 - (x) Update docs
 - (x) Fix `superpack` to be more reliable
 - (x) Fix `bin/xhi dev_cover` dependencies
-- (x) Update AMI image for deployment, add screen shot
+- (x) Update AMI image for deployment; add screen shot
 - (o) Add UUID snippet from Git to build number, for example, `000025-1c002d`
 - (o) Fix commit hook conflict in `bin/xhi` run range
-- (o) Update [quick reference][_03] code standard
+- (o) Update quick reference code standard
+
 ### Version 1.5.x (next)
 - (o) Update code standard quick-reference
 - (o) Test load times using remote server

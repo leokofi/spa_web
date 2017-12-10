@@ -18,6 +18,7 @@
  *   - closeLbFn        : Remove litebox and content (config callback)
  *   - handleResizeFn   : Adjust litebox for screen size change
  *   - hideLbFn         : Remove litebox and content
+ *   - hideBusyFn       : Hide a busy litebox
  *   - showBusyFn       : Show a busy litebox
  *   - showErrorTableFn : Show an error table
  *   - showLbFn         : Show litebox with content.
@@ -69,19 +70,15 @@ xhi._06_lb_ = (function () {
       __p        = __util._makeReplaceFn_( '_p_', aKey ),
       __tmplt    = __util._makeTmpltStr_,
 
-      $Map       = {},
       configMap  = {
         _trans_ms_      : 350, // transition time
         _active_class_  : aKey + '-_x_active_',
-        _main_html_     : __p( __blank
+        _main_tmplt_     : __p( __blank
           + '<div id="{_p_}-_lb_mask_" class="{_p_}-_lb_mask_"></div>'
           + '<div id="{_p_}-_lb_spin_" class="{_p_}-_lb_spin_">&#xf021;'
           + '</div><div id="{_p_}-_lb_"></div>'
         ),
-        _spin_tmplt_    : __p(
-          '<div class="{_p_}-_lb_spin_ {_p_}-_x_local_">&#xf021;</div>'
-        ),
-        _local_html_    : __p( __blank
+        _local_tmplt_    : __p( __blank
           + '<div class="{_p_}-_lb_mask_ {_p_}-_x_local_ {_p_}-_x_active_">'
           + '</div>'
           + '<div class="{_p_}-_lb_spin_ {_p_}-_x_local_ {_p_}-_x_active_">'
@@ -121,7 +118,14 @@ xhi._06_lb_ = (function () {
             + '<div class="{_p_}-_lb_close_">{_close_html_}</div>'
             + '<div class="{_p_}-_lb_content_">{_content_html_}</div>'
           )
-        }
+        },
+
+        // These are used for autosizing
+        _small_w_px_    : 677,
+        _med_w_px_      : 900,
+        _small_w_ratio_ : 0.90,
+        _med_w_ratio_   : 0.75,
+        _lg_w_ratio_    : 0.50
       },
       stateMap   = {
         _cleanup_fn_    : __undef,  // Clean up function (bound)
@@ -133,6 +137,7 @@ xhi._06_lb_ = (function () {
         _mod_class_str_ : __blank,  // Caller specified class(es) for lb
         _onclose_fn_    : __undef   // Callback function on close
       },
+      $Map,
 
       coordDraggable, instanceMap, optionMap
     ;
@@ -146,12 +151,23 @@ xhi._06_lb_ = (function () {
     function set$Map () {
       $Map = {
         _$view_     : $( window ),
+        _$body_     : $( 'body' ),
         _$litebox_  : $( '#' + aKey + '-_lb_' ),
         _$mask_     : $( '#' + aKey + '-_lb_mask_' ),
         _$spin_     : $( '#' + aKey + '-_lb_spin_' )
       };
     }
     // . END DOM method /set$Map/
+
+    // BEGIN DOM method /getBodyScrollPx/
+    // Purpose : Fixes scroll number for Firefox
+    function getBodyScrollPx () {
+      return window.pageYOffset
+        || window.document.documentElement.scrollTop
+        || $Map._$body_[ vMap._prop_ ]( vMap._scrollTop_ )
+        || __0;
+    }
+    // END DOM meethod /getBodyScrollPx/
 
     // BEGIN DOM method /initModuleFn/
     // Summary   : initModuleFn()
@@ -165,7 +181,7 @@ xhi._06_lb_ = (function () {
       if ( stateMap._is_ready_ ) { return; }
 
       // Add to DOM
-      $( vMap._body_ )[ vMap._append_ ]( configMap._main_html_ );
+      $( vMap._body_ )[ vMap._append_ ]( configMap._main_tmplt_ );
 
       // Cache jQuery collections and set state
       set$Map();
@@ -188,7 +204,7 @@ xhi._06_lb_ = (function () {
     function addLocalSpinFn ( arg_$box ) {
       var $box = __castJQ( arg_$box );
 
-      if ( $box ) { $box[ vMap._html_ ]( configMap._local_html_ ); }
+      if ( $box ) { $box[ vMap._html_ ]( configMap._local_tmplt_ ); }
     }    // . END DOM method /addLocalSpinFn/
 
     // BEGIN DOM method /cleanUpFn/
@@ -201,18 +217,17 @@ xhi._06_lb_ = (function () {
     // Throws    : None
     //
     function cleanUpFn () {
-      var
-        smap                  = this;
+      var ctx_obj = this;
       stateMap._cleanup_toid_ = __undef;
 
       /* istanbul ignore next */
-      if ( !smap ) { return; }
+      if ( !ctx_obj ) { return; }
 
       $Map._$mask_[ vMap._removeAttr_ ]( vMap._style_ )[
         vMap._css_ ]( cssKmap._display_, cssVmap._none_ );
       $Map._$litebox_[ vMap._removeAttr_ ]( vMap._style_ )[
         vMap._css_ ]( cssKmap._display_, cssVmap._none_ )[
-        vMap._removeClass_ ]( smap._mod_class_str_ );
+        vMap._removeClass_ ]( ctx_obj._mod_class_str_ );
 
       if ( $Map._$content_ ) {
         $Map._$content_[ vMap._removeAttr_ ]( vMap._style_ )[
@@ -226,12 +241,13 @@ xhi._06_lb_ = (function () {
         $Map._$close_[ vMap._removeAttr_ ]( vMap._style_ )[
           vMap._empty_ ]();
       }
-      if ( smap._callback_fn_ ) {
-        smap._callback_fn_( $Map._$litebox_, $Map._$mask_ );
+      if ( ctx_obj._callback_fn_ ) {
+        ctx_obj._callback_fn_( $Map._$litebox_, $Map._$mask_ );
       }
       stateMap._is_busy_       = __false;
       stateMap._mod_class_str_ = __blank;
       stateMap._is_masked_     = __false;
+      $Map._$litebox_[ vMap._off_ ]();
     }
     // . END DOM method /cleanUpFn/
 
@@ -329,36 +345,81 @@ xhi._06_lb_ = (function () {
     }
     // . END method /showBusyFn/
 
+    // BEGIN method /hideBusyFn/
+    // Summary   : hideBusyFn()
+    // Purpose   : Hides busy indicator
+    // Example   : hideBusyFn();
+    // Arguments : none
+    // Settings  : Changes stateMap, $Map
+    // Returns   : undefined
+    // Throws    : None
+    //
+    function hideBusyFn () {
+      var active_class = configMap._active_class_;
+      initModuleFn();
+      hideLbFn();
+
+      $Map._$mask_[ vMap._css_ ]( cssKmap._display_, cssVmap._none_ )[
+        vMap._removeClass_ ]( active_class );
+      stateMap._is_masked_ = __false;
+      $Map._$spin_[ vMap._removeClass_ ]( active_class );
+    }
+    // . END method /hideBusyFn/
+
     // BEGIN DOM method /afterShowFn/
     // Purpose   : Finish presentation of litebox after it is shown
     //
     function afterShowFn () {
       var
-        smap         = this,
-        do_sizing    = smap._do_sizing_,
-        do_mask      = smap._do_mask_,
-        $litebox     = smap._$litebox_,
-        $mask        = smap._$mask_,
-        onshow_fn    = smap._onshow_fn_,
+        ctx_obj      = this,
+        do_abs_pos   = ctx_obj._do_abs_pos_,
+        do_sizing    = ctx_obj._do_sizing_,
+        do_mask      = ctx_obj._do_mask_,
+        $litebox     = ctx_obj._$litebox_,
+        $mask        = ctx_obj._$mask_,
+        onshow_fn    = ctx_obj._onshow_fn_,
         active_class = configMap._active_class_,
 
-        view_h_px, view_w_px, margin_left_px,
-        margin_top_px, css_map
+        lb_h_px, lb_w_px, view_h_px, view_w_px,
+        max_w_px, margin_left_px, margin_top_px, css_map
         ;
 
-      if ( do_sizing ) {
         view_h_px = $Map._$view_[ vMap._outerHeight_ ]();
         view_w_px = $Map._$view_[ vMap._outerWidth_  ]();
-        margin_left_px = ( __0 - view_w_px / 4 );
-        margin_top_px  = ( __0 - view_h_px / 4 );
+
+      if ( do_sizing ) {
+        lb_h_px   = $litebox[ vMap._outerHeight_ ]();
+        lb_w_px   = $litebox[ vMap._outerWidth_  ]();
+
+        // Begin fix width if too large for window
+        if ( view_w_px < configMap._small_w_px_ ) {
+          max_w_px = view_w_px * configMap._small_w_ratio_;
+        }
+        else if ( view_w_px < configMap._med_w_px_ ) {
+          max_w_px = view_w_px * configMap._med_w_ratio_;
+        }
+        else {
+          max_w_px = view_w_px * configMap._lg_w_ratio_;
+        }
+        if ( lb_w_px > max_w_px ) {
+          $litebox[ vMap._css_ ]( cssKmap._width_, max_w_px );
+          lb_h_px   = $litebox[ vMap._outerHeight_ ]();
+          lb_w_px   = $litebox[ vMap._outerWidth_  ]();
+        }
+        // End fix width if too large for window
+
+        margin_left_px = - ( lb_w_px / 2 );
+        margin_top_px  = - ( lb_h_px / 2 );
 
         css_map = {
           'margin-top'  : margin_top_px,
           'margin-left' : margin_left_px,
-          left          : cssVmap._50p_,
-          top           : cssVmap._50p_,
-          width         : view_w_px / __2
+          left          : Math.round( view_w_px / __2 ),
+          top           : Math.round( view_h_px / __2 )
         };
+        if ( do_abs_pos ) {
+          css_map.top += getBodyScrollPx();
+        }
         $litebox[ vMap._css_ ]( css_map );
       }
 
@@ -402,6 +463,7 @@ xhi._06_lb_ = (function () {
     //   * _autoclose_ms_   : (infinity) Cancels the window after n milliseconds
     //   * _content_html_   : (50% ht loading graphic) Content in main panel
     //   * _close_html_     : (blank) Close symbol or text
+    //   * _do_abs_pos_     : (false) Use absolute position to body
     //   * _do_block_click_ : (false) Block user click on mask to close?
     //   * _do_dflt_class_  : (true) Keep default litebox class?
     //   * _do_draggable_   : (true) User drag by title bar?
@@ -430,10 +492,9 @@ xhi._06_lb_ = (function () {
     //     ( separate multiple classes by a space, e.g. 'c1 c2 c3 ... ' )
     //   * _position_map_   : (undef) CSS map to override standard
     //       position, size, and other attributes.
-    //       Default position is centered.  Width is 50% of window, height
-    //       is natural height required to contain content / max-height 50%.
-    //       Constent scrolling is enabled veritcal and disabled horizontal.
-    //       Mobile w x h is 90%/90%.
+    //       Default position is centered and natural width.
+    //       Width is limited to 50% on large windows, 75% on medium, and
+    //       90% on small (see configMap._small_w_ratio_, etc)
     //   * _onclose_fn_     : (null) A function called when close is requested.
     //       THE LITEBOX IS CLOSED IFF IT RETURNS A TRUTHY VALUE.
     //   * _onshow_fn_      : (null) A function to after rendering and
@@ -450,7 +511,6 @@ xhi._06_lb_ = (function () {
       initModuleFn();
       var
         map           = __castMap( arg_map, {} ),
-
         close_html    = __castStr( map._close_html_, __blank ),
         content_html  = __castStr( map._content_html_, __blank ),
         layout_key    = __castStr( map._layout_key_ ) || '_top_',
@@ -460,6 +520,7 @@ xhi._06_lb_ = (function () {
         autoclose_ms  = __castInt( map._autoclose_ms_ ),
         position_map  = __castMap( map._position_map_ ),
 
+        do_abs_pos    = __castBool( map._do_abs_pos_, __false ),
         do_bclick     = __castBool( map._do_block_click_, __false ),
         do_draggable  = __castBool( map._do_draggable_, __true ),
         do_dflt_class = __castBool( map._do_dflt_class_, __true ),
@@ -553,9 +614,15 @@ xhi._06_lb_ = (function () {
       }
       css_map.display = cssVmap._block_;
 
-      // Set classes
+      // Prepend default class if do_dflt_class is true
       if ( do_dflt_class ) {
         mod_class_str = aKey + '-_lb_ ' + mod_class_str;
+      }
+
+      // Prepend local class if do_abs_pos_ is true
+      stateMap._do_abs_pos_ = do_abs_pos;
+      if ( do_abs_pos ) {
+        mod_class_str = aKey + '-_x_local_ ' + mod_class_str;
       }
       $litebox[ vMap._addClass_ ]( mod_class_str );
       stateMap._mod_class_str_ = mod_class_str;
@@ -566,6 +633,7 @@ xhi._06_lb_ = (function () {
         _$mask_     : $mask,
         _do_mask_   : do_mask,
         _do_sizing_ : do_sizing,
+        _do_abs_pos_ : do_abs_pos,
         _onshow_fn_ : onshow_fn
       };
       aftershow_fn   = afterShowFn[ vMap._bind_ ]( aftershow_smap );
@@ -591,16 +659,23 @@ xhi._06_lb_ = (function () {
 
       $target[ vMap._css_ ]( cssKmap._cursor_, cssVmap._move_ );
       stateMap._$drag_target_ = $target;
+      stateMap._body_scroll_px_ = getBodyScrollPx();
 
       offset_map[ cssKmap._right_ ]  = __blank;
       offset_map[ cssKmap._bottom_ ] = __blank;
       offset_map[ cssKmap._margin_ ] = __0;
+      if ( ! stateMap._do_abs_pos_ ) {
+        offset_map[ cssKmap._top_ ] -= stateMap._body_scroll_px_;
+      }
       $Map._$litebox_[ vMap._css_ ]( offset_map );
     }
 
     /* istanbul ignore next */
     function onDragmove ( event_obj ) {
       var offset_map = $Map._$litebox_.offset();
+      if ( ! stateMap._do_abs_pos_ ) {
+        offset_map.top -= stateMap._body_scroll_px_;
+      }
       offset_map.top += event_obj.px_delta_y;
       offset_map.left += event_obj.px_delta_x;
       $Map._$litebox_[ vMap._css_ ]( offset_map );
@@ -618,30 +693,30 @@ xhi._06_lb_ = (function () {
     // BEGIN public method /handleResizeFn/
     // Summary   : handleResizeFn( <size_map> )
     // Purpose   : Adjust litebox for screen size change
-    // Example   : handleResizeFn({ _body_h_px_ : 1280, _body_w_px_ : 768 });
+    // Example   : handleResizeFn({ _window_h_px_ : 1280, _window_w_px_ : 768 });
     // Arguments : (named)
-    //   _body_h_px_ : Body height in pixels
-    //   _body_w_px_ : Body width in pixels
+    //   _window_h_px_ : Window height in pixels
+    //   _window_w_px_ : Window width in pixels
     // Settings  : Changes stateMap, $Map
     // Returns   :
     //   true  - resize successful
     //   false - no resize processed
     // Throws    : None
-    //   Adjusts the litebox and mask to provided body width and
+    //   Adjusts the litebox and mask to provided window width and
     //   height.  This should be called when the window is resized, typically
     //   throttled using __util._makeThrottleFn_.
     //
     function handleResizeFn ( arg_map ) {
       var
         map       = __castMap( arg_map, {} ),
-        body_h_px = __castNum( map._body_h_px_ ),
-        body_w_px = __castNum( map._body_w_px_ ),
+        window_h_px = __castNum( map._window_h_px_ ),
+        window_w_px = __castNum( map._window_w_px_ ),
         $litebox  = $Map._$litebox_,
 
         h_px, w_px
       ;
 
-      if ( !( body_h_px && body_w_px && $litebox ) ) { return __false; }
+      if ( !( window_h_px && window_w_px && $litebox ) ) { return __false; }
 
       if ( stateMap._is_masked_ ) {
         $litebox = $Map._$litebox_;
@@ -650,15 +725,15 @@ xhi._06_lb_ = (function () {
 
         $litebox[ vMap._css_ ]( {
           top  : vMap._makeFloorNumFn_(
-            ( body_h_px - h_px ) / nMap._2_ + nMap._d5_
+            ( window_h_px - h_px ) / __2 + nMap._d5_
           ),
           left : vMap._makeFloorNumFn_(
-            ( body_w_px - w_px ) / nMap._2_ + nMap._d5_
+            ( window_w_px - w_px ) / __2 + nMap._d5_
           )
         } );
       }
-      stateMap._body_w_px_   = body_w_px;
-      stateMap._body_h_px_   = body_h_px;
+      stateMap._window_w_px_   = window_w_px;
+      stateMap._window_h_px_   = window_h_px;
       stateMap._resize_toid_ = __undef;
       return __true;
     }
@@ -771,6 +846,9 @@ xhi._06_lb_ = (function () {
       if ( type_str === '_stateMap_' ) {
         return stateMap;
       }
+      if ( type_str === '_$map_' ) {
+        return $Map;
+      }
       __logMsg( '_warn_', '_requested_map_not_available_', type_str );
     }
     // . END Public method /getMapFn/
@@ -790,6 +868,7 @@ xhi._06_lb_ = (function () {
       _closeLbFn_       : closeLbFn,
       _getMapFn_        : getMapFn,
       _handleResizeFn_  : handleResizeFn,
+      _hideBusyFn_       : hideBusyFn,
       _hideLbFn_        : hideLbFn,
       _setConfigMapFn_  : setConfigMapFn,
       _showBusyFn_      : showBusyFn,
