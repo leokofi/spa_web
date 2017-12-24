@@ -1,4 +1,6 @@
-#!/usr/bin/env node
+#!/usr/bin/node
+/*#!/usr/bin/env node */
+
 /* vim: set ft=javascript: */
 /*
  * Purpose   : Run hi_score lifecycle tools

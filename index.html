@@ -1,0 +1,1257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <style>
+  
+  /* Thanks to this blog entry :
+    http://devilgate.org/blog/2012/07/02/
+    tip-using-pandoc-to-create-truly-standalone-html-files/
+  */
+  
+  @font-face {
+    font-family: octicons-anchor;
+    src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAYcAA0AAAAACjQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABMAAAABwAAAAca8vGTk9TLzIAAAFMAAAARAAAAFZG1VHVY21hcAAAAZAAAAA+AAABQgAP9AdjdnQgAAAB0AAAAAQAAAAEACICiGdhc3AAAAHUAAAACAAAAAj//wADZ2x5ZgAAAdwAAADRAAABEKyikaNoZWFkAAACsAAAAC0AAAA2AtXoA2hoZWEAAALgAAAAHAAAACQHngNFaG10eAAAAvwAAAAQAAAAEAwAACJsb2NhAAADDAAAAAoAAAAKALIAVG1heHAAAAMYAAAAHwAAACABEAB2bmFtZQAAAzgAAALBAAAFu3I9x/Nwb3N0AAAF/AAAAB0AAAAvaoFvbwAAAAEAAAAAzBdyYwAAAADP2IQvAAAAAM/bz7t4nGNgZGFgnMDAysDB1Ml0hoGBoR9CM75mMGLkYGBgYmBlZsAKAtJcUxgcPsR8iGF2+O/AEMPsznAYKMwIkgMA5REMOXicY2BgYGaAYBkGRgYQsAHyGMF8FgYFIM0ChED+h5j//yEk/3KoSgZGNgYYk4GRCUgwMaACRoZhDwCs7QgGAAAAIgKIAAAAAf//AAJ4nHWMMQrCQBBF/0zWrCCIKUQsTDCL2EXMohYGSSmorScInsRGL2DOYJe0Ntp7BK+gJ1BxF1stZvjz/v8DRghQzEc4kIgKwiAppcA9LtzKLSkdNhKFY3HF4lK69ExKslx7Xa+vPRVS43G98vG1DnkDMIBUgFN0MDXflU8tbaZOUkXUH0+U27RoRpOIyCKjbMCVejwypzJJG4jIwb43rfl6wbwanocrJm9XFYfskuVC5K/TPyczNU7b84CXcbxks1Un6H6tLH9vf2LRnn8Ax7A5WQAAAHicY2BkYGAA4teL1+yI57f5ysDNwgAC529f0kOmWRiYVgEpDgYmEA8AUzEKsQAAAHicY2BkYGB2+O/AEMPCAAJAkpEBFbAAADgKAe0EAAAiAAAAAAQAAAAEAAAAAAAAKgAqACoAiAAAeJxjYGRgYGBhsGFgYgABEMkFhAwM/xn0QAIAD6YBhwB4nI1Ty07cMBS9QwKlQapQW3VXySvEqDCZGbGaHULiIQ1FKgjWMxknMfLEke2A+IJu+wntrt/QbVf9gG75jK577Lg8K1qQPCfnnnt8fX1NRC/pmjrk/zprC+8D7tBy9DHgBXoWfQ44Av8t4Bj4Z8CLtBL9CniJluPXASf0Lm4CXqFX8Q84dOLnMB17N4c7tBo1AS/Qi+hTwBH4rwHHwN8DXqQ30XXAS7QaLwSc0Gn8NuAVWou/gFmnjLrEaEh9GmDdDGgL3B4JsrRPDU2hTOiMSuJUIdKQQayiAth69r6akSSFqIJuA19TrzCIaY8sIoxyrNIrL//pw7A2iMygkX5vDj+G+kuoLdX4GlGK/8Lnlz6/h9MpmoO9rafrz7ILXEHHaAx95s9lsI7AHNMBWEZHULnfAXwG9/ZqdzLI08iuwRloXE8kfhXYAvE23+23DU3t626rbs8/8adv+9DWknsHp3E17oCf+Z48rvEQNZ78paYM38qfk3v/u3l3u3GXN2Dmvmvpf1Srwk3pB/VSsp512bA/GG5i2WJ7wu430yQ5K3nFGiOqgtmSB5pJVSizwaacmUZzZhXLlZTq8qGGFY2YcSkqbth6aW1tRmlaCFs2016m5qn36SbJrqosG4uMV4aP2PHBmB3tjtmgN2izkGQyLWprekbIntJFing32a5rKWCN/SdSoga45EJykyQ7asZvHQ8PTm6cslIpwyeyjbVltNikc2HTR7YKh9LBl9DADC0U/jLcBZDKrMhUBfQBvXRzLtFtjU9eNHKin0x5InTqb8lNpfKv1s1xHzTXRqgKzek/mb7nB8RZTCDhGEX3kK/8Q75AmUM/eLkfA+0Hi908Kx4eNsMgudg5GLdRD7a84npi+YxNr5i5KIbW5izXas7cHXIMAau1OueZhfj+cOcP3P8MNIWLyYOBuxL6DRylJ4cAAAB4nGNgYoAALjDJyIAOWMCiTIxMLDmZedkABtIBygAAAA==) format('woff');
+  }
+  
+  body {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    color: #333;
+    overflow: auto;
+    font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    margin: 0 3rem;
+  }
+  
+  a {
+    background: transparent;
+  }
+  
+  a:active,
+  a:hover {
+    outline: 0;
+  }
+  
+  strong {
+    font-weight: bold;
+  }
+  
+  h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+  }
+  
+  img {
+    border: 0;
+  }
+  
+  hr {
+    box-sizing: content-box;
+    height: 0;
+  }
+  
+  pre {
+    overflow: auto;
+  }
+  
+  code,
+  kbd,
+  pre {
+    font-family: monospace, monospace;
+    font-size: 1em;
+  }
+  
+  input {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+  }
+  
+  html input[disabled] {
+    cursor: default;
+  }
+  
+  input {
+    line-height: normal;
+  }
+  
+  input[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+  }
+  
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  
+  td,
+  th {
+    padding: 0;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  input {
+    font: 13px/1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+  
+  a {
+    color: #4183c4;
+    text-decoration: none;
+  }
+  
+  a:hover,
+  a:active {
+    text-decoration: underline;
+  }
+  
+  hr {
+    height: 0;
+    margin: 15px 0;
+    overflow: hidden;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  hr:before {
+    display: table;
+    content: "";
+  }
+  
+  hr:after {
+    display: table;
+    clear: both;
+    content: "";
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 1.1;
+  }
+  
+  h1 {
+    font-size: 30px;
+  }
+  
+  h2 {
+    font-size: 21px;
+  }
+  
+  h3 {
+    font-size: 16px;
+  }
+  
+  h4 {
+    font-size: 14px;
+  }
+  
+  h5 {
+    font-size: 12px;
+  }
+  
+  h6 {
+    font-size: 11px;
+  }
+  
+  blockquote {
+    margin: 0;
+  }
+  
+  ul,
+  ol {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  ol ol,
+  ul ol {
+    list-style-type: lower-roman;
+  }
+  
+  ul ul ol,
+  ul ol ol,
+  ol ul ol,
+  ol ol ol {
+    list-style-type: lower-alpha;
+  }
+  
+  dd {
+    margin-left: 0;
+  }
+  
+  code {
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 12px;
+  }
+  
+  pre {
+    margin-top: 0;
+    margin-bottom: 0;
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  }
+  
+  .octicon {
+    font: normal normal normal 16px/1 octicons-anchor;
+    display: inline-block;
+    text-decoration: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .octicon-link:before {
+    content: '\f05c';
+  }
+  
+  .markdown-body>*:first-child {
+    margin-top: 0 !important;
+  }
+  
+  .markdown-body>*:last-child {
+    margin-bottom: 0 !important;
+  }
+  
+  a:not([href]) {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .anchor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    padding-right: 6px;
+    padding-left: 30px;
+    margin-left: -30px;
+  }
+  
+  .anchor:focus {
+    outline: none;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    position: relative;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+  }
+  
+  h1 .octicon-link,
+  h2 .octicon-link,
+  h3 .octicon-link,
+  h4 .octicon-link,
+  h5 .octicon-link,
+  h6 .octicon-link {
+    display: none;
+    color: #000;
+    vertical-align: middle;
+  }
+  
+  h1:hover .anchor,
+  h2:hover .anchor,
+  h3:hover .anchor,
+  h4:hover .anchor,
+  h5:hover .anchor,
+  h6:hover .anchor {
+    padding-left: 8px;
+    margin-left: -30px;
+    text-decoration: none;
+  }
+  
+  h1:hover .anchor .octicon-link,
+  h2:hover .anchor .octicon-link,
+  h3:hover .anchor .octicon-link,
+  h4:hover .anchor .octicon-link,
+  h5:hover .anchor .octicon-link,
+  h6:hover .anchor .octicon-link {
+    display: inline-block;
+  }
+  
+  h1 {
+    padding-bottom: 0.3em;
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+  }
+  
+  h1 .anchor {
+    line-height: 1;
+  }
+  
+  h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+  }
+  
+  h2 .anchor {
+    line-height: 1;
+  }
+  
+  h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+  }
+  
+  h3 .anchor {
+    line-height: 1.2;
+  }
+  
+  h4 {
+    font-size: 1.25em;
+  }
+  
+  h4 .anchor {
+    line-height: 1.2;
+  }
+  
+  h5 {
+    font-size: 1em;
+  }
+  
+  h5 .anchor {
+    line-height: 1.1;
+  }
+  
+  h6 {
+    font-size: 1em;
+    color: #777;
+  }
+  
+  h6 .anchor {
+    line-height: 1.1;
+  }
+  
+  p,
+  blockquote,
+  ul,
+  ol,
+  dl,
+  table,
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  
+  hr {
+    height: 4px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+  }
+  
+  ul,
+  ol {
+    padding-left: 2em;
+  }
+  
+  ul ul,
+  ul ol,
+  ol ol,
+  ol ul {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  li>p {
+    margin-top: 16px;
+  }
+  
+  dl {
+    padding: 0;
+  }
+  
+  dl dt {
+    padding: 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+  }
+  
+  dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+  }
+  
+  blockquote {
+    padding: 0 15px;
+    color: #777;
+    border-left: 4px solid #ddd;
+  }
+  
+  blockquote>:first-child {
+    margin-top: 0;
+  }
+  
+  blockquote>:last-child {
+    margin-bottom: 0;
+  }
+  
+  table {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;
+  }
+  
+  table th {
+    font-weight: bold;
+  }
+  
+  table th,
+  table td {
+    padding: 6px 13px;
+    border: 1px solid #ddd;
+  }
+  
+  table tr {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+  }
+  
+  table tr:nth-child(2n) {
+    background-color: #f8f8f8;
+  }
+  
+  img {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  code {
+    padding: 0;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(0,0,0,0.04);
+    border-radius: 3px;
+  }
+  
+  code:before,
+  code:after {
+    letter-spacing: -0.2em;
+    content: "\00a0";
+  }
+  
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+  
+  .highlight {
+    margin-bottom: 16px;
+  }
+  
+  .highlight pre,
+  pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border-radius: 3px;
+  }
+  
+  .highlight pre {
+    margin-bottom: 0;
+    word-break: normal;
+  }
+  
+  pre {
+    word-wrap: normal;
+  }
+  
+  pre code {
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+  
+  pre code:before,
+  pre code:after {
+    content: normal;
+  }
+  
+  kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font-size: 11px;
+    line-height: 10px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #bbb;
+  }
+  
+  .pl-c {
+    color: #969896;
+  }
+  
+  .pl-c1,
+  .pl-s .pl-v {
+    color: #0086b3;
+  }
+  
+  .pl-e,
+  .pl-en {
+    color: #795da3;
+  }
+  
+  .pl-s .pl-s1,
+  .pl-smi {
+    color: #333;
+  }
+  
+  .pl-ent {
+    color: #63a35c;
+  }
+  
+  .pl-k {
+    color: #a71d5d;
+  }
+  
+  .pl-pds,
+  .pl-s,
+  .pl-s .pl-pse .pl-s1,
+  .pl-sr,
+  .pl-sr .pl-cce,
+  .pl-sr .pl-sra,
+  .pl-sr .pl-sre {
+    color: #183691;
+  }
+  
+  .pl-v {
+    color: #ed6a43;
+  }
+  
+  .pl-id {
+    color: #b52a1d;
+  }
+  
+  .pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+  }
+  
+  .pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+  }
+  
+  .pl-ml {
+    color: #693a17;
+  }
+  
+  .pl-mh,
+  .pl-mh .pl-en,
+  .pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+  }
+  
+  .pl-mq {
+    color: #008080;
+  }
+  
+  .pl-mi {
+    color: #333;
+    font-style: italic;
+  }
+  
+  .pl-mb {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .pl-md {
+    background-color: #ffecec;
+    color: #bd2c00;
+  }
+  
+  .pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+  }
+  
+  .pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+  }
+  
+  .pl-mo {
+    color: #1d3e81;
+  }
+  
+  kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    line-height: 10px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #bbb;
+  }
+  
+  .task-list-item {
+    list-style-type: none;
+  }
+  
+  .task-list-item+.task-list-item {
+    margin-top: 3px;
+  }
+  
+  .task-list-item input {
+    margin: 0 0.35em 0.25em -1.6em;
+    vertical-align: middle;
+  }
+  
+  :checked+.radio-label {
+    z-index: 1;
+    position: relative;
+    border-color: #4183c4;
+  }
+  </style>
+</head>
+<body>
+<p><img src="img/hi_score.png" alt="hi_score" /><br />
+<a href="https://coveralls.io/github/mmikowski/hi_score?branch=master"><img src="https://coveralls.io/repos/github/mmikowski/hi_score/badge.svg?branch=master" alt="Coverage Status" /></a></p>
+<p><em>Full-lifecycle starter project for SPAs</em></p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p><code>hi_score</code> is a full-lifecycle starter project for web application development. It embodies good practice from over 20 years of experience for every lifecycle stage. It also embraces the feature-module (or &quot;web component&quot;) design pattern, so it should work well with React or Vue.js. Please do swap assets and libraries as required - <a href="http://mmikowski.github.io/no-frameworks">that's the point</a>.</p>
+<h2 id="recent-changes">Recent changes</h2>
+<h3 id="version-1.4.x-2017-10-01">Version 1.4.x (2017-10-01)</h3>
+<ul>
+<li>Add Typebomb2 example application</li>
+<li>Fix font path errors with patch for font-awesome CSS</li>
+<li>Convert build system to JavaScript using <code>package.json</code> as manifest</li>
+<li>Enhance <code>js/xhi</code> libs and documentation</li>
+<li>Expand doc in <code>bin/xhi help build</code></li>
+<li>Revise code standards</li>
+<li>Update README with images</li>
+<li>Fix <code>superpack</code> to be more reliable</li>
+<li>Fix <code>bin/xhi dev_cover</code> dependencies</li>
+</ul>
+<hr />
+<h2 id="quick-start">Quick start</h2>
+<p>Download the latest <a href="http://michaelmikowski.com/ova/">latest virual appliance</a> to try <code>hi_score</code> with the minimum of time and hassle. Pick the latest <code>ova2</code> image for virutal box, and the latest <code>vmx.zip</code> image for VMware or Parallels. If you need more help with installing a VM or wish to consider other options, please consult the <a href="#development-platform">Development platform</a> section.</p>
+<p><img src="img/hi_score-appliance.png" alt="virual_appliance" /></p>
+<p>Open a terminal and enter the following lines. Wait for each to complete before proceeding to the next. The build process prompts the user to review TODO notes. Just press <code>return</code> to accept them.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> clone git@github.com:mmikowski/hi_score.git
+  <span class="bu">cd</span> hi_score
+  <span class="ex">bin/xhi</span> build,dev_start
+  <span class="ex">google-chrome</span> http://localhost:8080/build/latest/dist</code></pre></div>
+<p>The <code>bin/xhi</code> tool guides developers through lifecycle stages and employs sophisticated dependency checking to help avoid mistakes. The <code>bin/xhi build,dev_start</code> command installs vendor assets; copies, configures, and patches vendor files for development; configures and starts an HTTP server; lints code with ESLint and other checks, lists TODO items for developer review; runs all regression test suites in <code>test.d</code>; calculates and reports test coverage; minimizes, obsfucates, and creates a unique distribution directory containing multiple applications. The latest build can always be found in <code>build/latest/dist</code>.</p>
+<p><code>hi_score</code> has three example applications. Two (<code>app-ex01.html</code> and <code>app-ex02.html</code>) are quite simple. The third, Typebomb2 (<code>app-tb02.html</code>) is the latest addition and it is far less trivial. Use the Chrome developer tools to inspect the CSS, the DOM, and the JavaScript. Notice how CSS classes are obsfucated and namespaced. A snapshot of the game in action is shown below.</p>
+<p><img src="doc/images/tb2-001.png" alt="Typebomb2" /></p>
+<hr />
+<h2 id="key-benefits">Key benefits</h2>
+<p><code>hi_score</code> solves lots of hard stuff out-of-the-box so we can focus on improving things that really matter, like JavaScript, HTML, CSS and application logic. Key benefits are listed below.</p>
+<ul>
+<li>Full-lifecycle good practice and automation with <code>bin/xhi</code></li>
+<li>Integration with Git and NPM lifecycles</li>
+<li>Fully managed and patched vendor assets configured with <code>package.json</code></li>
+<li>Vendor assets include JavaScript, CSS, fonts, images, and others</li>
+<li>Development web server</li>
+<li>Drop-directory TDD with JSDOM</li>
+<li>Code coverage reports for each build</li>
+<li>Linting (ESLint, whitespace check, strict check, TODO check)</li>
+<li>Automatic install of comprehensive commit-hook</li>
+<li>Battle-tested libraries with over 97% coverage of core utilities</li>
+<li>Automatic namespacing and run-time control of CSS using <a href="http://powercss.org">PowerCSS</a></li>
+<li>All code written to a consistent <a href="https://github.com/mmikowski/hi_score/blob/master/doc/js-code-standard.adoc">standard</a></li>
+<li>Type safety using <a href="http://mmikowski.github.io/type-casts/">type-casting</a></li>
+<li>Integrated browsable HTML documentation using markdown and <code>pandoc</code></li>
+<li>Three example applications</li>
+<li>One-touch build ensures dozens of prequisites and tests pass and then creates a unique build id with pristine distribution directory, metadata, and coverage reports</li>
+<li>Compression and shuffling of symbols for each build</li>
+</ul>
+<hr />
+<h2 id="how-to-use">How to use</h2>
+<p>The best way to use <code>hi_score</code> is as a <code>git</code> upstream source. One may then create new application using the <code>hi_score</code> infrastructure without losing upstream improvements or bug fixes.</p>
+<p>First create a new empty repository on Github and copy the <code>ssh</code> repository URL, which should look similar to <code>git@github.com:&lt;user&gt;/&lt;repo_name&gt;</code> and then proceed as below:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">mkdir</span> -p ~/Github
+  <span class="bu">cd</span> ~/Github
+
+  <span class="co"># Clone the empty repository</span>
+  <span class="fu">git</span> clone git@github.com:<span class="op">&lt;</span>user<span class="op">&gt;</span>/<span class="op">&lt;</span>repo_name<span class="op">&gt;</span>
+  <span class="bu">cd</span> <span class="op">&lt;</span>repo_name<span class="op">&gt;</span>
+
+  <span class="co"># Create master branch</span>
+  <span class="fu">touch</span> README.<span class="op">&lt;</span>app_name<span class="op">&gt;</span>.md <span class="co"># Add app specific docs here</span>
+  <span class="fu">git</span> add .
+  <span class="fu">git</span> commit -m <span class="st">&#39;First commit for &lt;repo_name&gt;&#39;</span>
+  <span class="fu">git</span> push
+
+  <span class="co"># Verify origin</span>
+  <span class="fu">git</span> remote -v
+  <span class="co"># origin  git@github.com:&lt;user&gt;/&lt;repo_name&gt;.git (fetch)</span>
+  <span class="co"># origin  git@github.com:&lt;user&gt;/&lt;repo_name&gt;.git (push)</span>
+
+  <span class="co"># Add upstream repository</span>
+  <span class="fu">git</span> remote add upstream git@github.com:mmikowski/hi_score.git
+
+  <span class="co"># Verify upstream</span>
+  <span class="fu">git</span> remote -v
+  <span class="co"># origin    git@github.com:&lt;user&gt;/&lt;repo_name&gt;.git (fetch)</span>
+  <span class="co"># origin    git@github.com:&lt;user&gt;/&lt;repo_name&gt;.git (push)</span>
+  <span class="co"># upstream  git@github.com:mmikowski/hi_score.git (fetch)</span>
+  <span class="co"># upstream  git@github.com:mmikowski/hi_score.git (push)</span>
+
+  <span class="co"># Merge changes from upstream and push to origin</span>
+  <span class="fu">git</span> fetch upstream
+  <span class="fu">git</span> merge --allow-unrelated-histories upstream/master
+  <span class="fu">git</span> push</code></pre></div>
+<p>We suggest you structure your apps as illustrated by the Typebomb2 app. This follows the <em>feature module</em> pattern which has been embraced by the recent libraries such as React and Vue.js (we've been advocating it since 2011, go figure). You may view this guide any time using <code>bin/xhi design</code>. The core concept is to create feature modules that contain their own isolated data and models when appropriate. This is pragmatic and recognizes the fractal nature of MVC. A slicker image is shown below.</p>
+<p><img src="doc/images/architecture.png" alt="Feature module architecture" /></p>
+<p>We have provided the <code>js/xhi</code> libraries to either provide capabilities directly or as an illustration. For example, in Typebomb2 you will notice the following files for each layer shown in the diagram:</p>
+<pre><code>Module layers
+=======================================
+tb02.00_root.js            |        ^
+tb02.01_util.js          load       |
+tb02.02_data.js          order      |
+tb02.03_model.js           |      call,
+tb02.04_utilb.js           |      init
+tb02.06_css.js           events   order
+tb02.06_&lt;feature&gt;.js       |        |
+tb02.07_shell.js           |        |
+tb02.08_app.js             v        |</code></pre>
+<p>All these modules claim a slice of the application namespace (<code>tb02</code>) and use <code>js/xhi</code> libraries in one of three ways:</p>
+<ol>
+<li>Create a configured instance and use as-is</li>
+<li>Create an instance and decorate</li>
+<li>Use the module to guide development</li>
+</ol>
+<p>More specific notes about Typebomb2 app are provide in <code>README.app-tb02.md</code>. One can omit unused layers for a given app. However, for illustrative purposes, we have included all layers for Typebomb2. One can copy these to a new namespace to create a new app and then edit from there.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="bu">cd</span> hi_score
+  <span class="fu">cp</span> app-tb02.html app-<span class="op">&lt;</span>ns<span class="op">&gt;</span>.html
+
+  <span class="bu">cd</span> js
+  <span class="fu">cp</span> tb02.00_root.js          <span class="op">&lt;</span>ns<span class="op">&gt;</span>.00_root.js
+  <span class="fu">cp</span> tb02.01_util.js          <span class="op">&lt;</span>ns<span class="op">&gt;</span>.01_util.js
+  <span class="fu">cp</span> tb02.02_data.js          <span class="op">&lt;</span>ns<span class="op">&gt;</span>.02_data.js
+  <span class="fu">cp</span> tb02.03_model.js         <span class="op">&lt;</span>ns<span class="op">&gt;</span>.03_model.js
+  <span class="fu">cp</span> tb02.04_utilb.js         <span class="op">&lt;</span>ns<span class="op">&gt;</span>.04_utilb.js
+  <span class="fu">cp</span> tb02.05.css_<span class="op">&lt;</span>feature<span class="op">&gt;</span>.js <span class="op">&lt;</span>ns<span class="op">&gt;</span>.05.css_<span class="op">&lt;</span>feature<span class="op">&gt;</span>.js
+  <span class="fu">cp</span> tb02.06_css.js           <span class="op">&lt;</span>ns<span class="op">&gt;</span>.06_css.js
+  <span class="fu">cp</span> tb02.06_<span class="op">&lt;</span>feature<span class="op">&gt;</span>.js     <span class="op">&lt;</span>ns<span class="op">&gt;</span>.06_<span class="op">&lt;</span>feature<span class="op">&gt;</span>.js
+  <span class="fu">cp</span> tb02.07_shell.js         <span class="op">&lt;</span>ns<span class="op">&gt;</span>.07_shell.js
+  <span class="fu">cp</span> tb02.08_app.js           <span class="op">&lt;</span>ns<span class="op">&gt;</span>.08_app.js
+  <span class="fu">cp</span> tb02.08_app-build.js     <span class="op">&lt;</span>ns<span class="op">&gt;</span>.08_app-build.js
+  <span class="fu">git</span> add .
+
+  <span class="bu">cd</span> ../template
+  <span class="fu">cp</span> app-tb02.html app-<span class="op">&lt;</span>ns<span class="op">&gt;</span>.html</code></pre></div>
+<p>We need to change all references from <code>tb02</code> in these new files to our new namespace, <code>&lt;ns&gt;</code>. We will also need to add a new build manifest in <code>package.json</code>. See the <code>xhi_11_BuildMatrix</code> configuration for <code>tb02</code> as a guide. The result is an architecture that is designed to work well for every phase of the SPA lifecycle.</p>
+<p>One can delete all the example apps (<code>tb02</code>, <code>ex01</code>, <code>ex02</code>) from the project if they get in the way. However we recommend retaining at least <code>tb02</code> for reference because it will continue to be refined along with the <code>hi_score</code> project. One can refresh upstream at any time as shown below.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">  <span class="fu">git</span> fetch upstream
+  <span class="fu">git</span> merge upstream/master</code></pre></div>
+<p>We recommend you run <code>bin/xhi install,setup</code> after any such merge.</p>
+<hr />
+<h2 id="the-xhi-tool">The xhi tool</h2>
+<p>The <code>bin/xhi</code> tool automates good practice for almost every conceivable stage of the SPA development life cycle. Configuration for all stages is found in the NPM <code>package.json</code> file.</p>
+<h3 id="get-help">Get help</h3>
+<p>The lifecycle stages supported by <code>bin/xhi</code> are shown below. Those marked <code>placeholder</code> are those we plan to address in future releases. Use the command <code>bin/xhi help all</code> to see this list.</p>
+<pre><code>  $ bin/xhi help all
+    xhi&gt;  START Stage 00 help
+    xhi&gt;  00 help        : Help on &#39;xhi&#39; tool, use -v for verbose
+    xhi&gt;  01 install     : Download and install npm modules
+    xhi&gt;  02 setup       : Patch and distribute vendor npm assets
+    xhi&gt;  03 design      : Show architecture docs
+    xhi&gt;  04 dev_pull    : Download and merge SCMS assets (git pull)
+    xhi&gt;  05 dev_upgrade : Upgrade packages to latest
+    xhi&gt;  06 dev_start   : Start local HTTP server
+    xhi&gt;  07 dev_test    : Run regression tests
+    xhi&gt;  08 dev_lint    : Lint changed code
+    xhi&gt;  09 dev_cover   : Create coverage report
+    xhi&gt;  10 dev_commit  : Commit changes with git
+    xhi&gt;  11 build       : Build a distribution
+    xhi&gt;  12 publish     : Upload to publishers
+    xhi&gt;  13 dev_restart : Cycle local HTTP server
+    xhi&gt;  14 dev_stop    : Stop local HTTP server
+    xhi&gt;  15 deploy      : Upload distribution        # placeholder
+    xhi&gt;  16 prod_start  : Start production server(s) # placeholder
+    xhi&gt;  17 prod_restart: Cycle production server(s) # placeholder
+    xhi&gt;  18 prod_stop   : Stop production server(s)  # placeholder
+    xhi&gt;  19 fetch_info  : Fetch feedback             # placeholder
+    xhi&gt;  20 uninstall   : Remove xhi                 # placeholder
+    xhi&gt;  END Stage 00 help</code></pre>
+<p>This tool is used for all <a href="https://docs.npmjs.com/misc/scripts">NPM lifecycle scripts</a> (such as <code>npm test</code>).</p>
+<p>Many sections of this document have been removed because the information is now directly available from <code>bin/xhi help</code>. One can see detailed help on a stage or range of stages by including a <code>-v</code> flag as shown below.</p>
+<pre><code>  $ bin/xhi help dev_lint -v
+  xhi&gt;  START Stage 00 help
+  xhi&gt;  08 dev_lint:
+  xhi&gt;    Check lint quality of changed JS code.
+  xhi&gt;    Files in &#39;vendor|node_modules&#39; directories are ignored.
+  xhi&gt;    Four tests are performed on each file:
+  xhi&gt;      1. Check for tab characters or trailing space
+  xhi&gt;      2. Ensure &#39;use strict&#39;; is employed
+  xhi&gt;      3. Run &#39;eslint&#39; on each file (config in package.json)
+  xhi&gt;      4. List TODO items for developer to review and approve
+  xhi&gt;    Any failed step causes this stage to report failure.
+  xhi&gt;
+  xhi&gt;    This stage does not &quot;short-circuit&quot; so any and all issues are
+  xhi&gt;    shown for each run.
+  xhi&gt;
+  xhi&gt;    NPM SCRIPTS      : none.
+  xhi&gt;    SUCCESS CRITERIA : All tests complete without error
+  xhi&gt;  END   Stage 00 help</code></pre>
+<h3 id="run-lifecycle-stages">Run lifecycle stages</h3>
+<p>A typical workflow is shown below.</p>
+<pre><code>  # Get list of stages
+  $ xhi help all
+
+  # Run desired stage-range
+  $ xhi dev_cover,build</code></pre>
+<p>The <code>bin/xhi</code> tool takes a <code>&lt;stage-range&gt;</code> argument. Stages that are provided out-of-order are sorted before running. Example use is shown below.</p>
+<pre><code>  # Run a single stage
+  $ xhi install
+
+  # Run all stages between &#39;install&#39; and &#39;dev_commit&#39; inclusive
+  $ xhi install-dev_commit
+
+  # Run individual stages
+  $ xhi update,dev_cover
+
+  # Run a range using stage numbers
+  $ xhi 0-5
+
+  # Get help on ranges
+  $ xhi help install -v
+  $ xhi help install-dev_commit
+  $ xhi help update,dev_cover
+  $ xhi help 0-5</code></pre>
+<p>Even if we specify only one stage <code>bin/xhi</code> will often run more. That is because many stages require prequisites as discussed in the following section.</p>
+<h3 id="prerequisite-resolution">Prerequisite resolution</h3>
+<p>The <code>bin/xhi</code> has a resolver that ensures all prerequisite stages are run but only if required. For example, if we run <code>bin/xhi build</code> right after cloning the Github repository, it will run all the stages needed to ensure a quality build including <em>installation of the npm libraries</em>. If we run it again, many stages will be omitted because they are known as complete. Conversely, if we run <code>dev_upgrade</code> all <code>npm</code> packages will be updated to the latest revision. On any subsequent build, <code>bin/xhi</code> will re-install all <code>npm</code> packages, reset the environment, and re-test the codebase because this is required when libraries are updated. This capability is provided by setting <em>goal</em> and <em>environment</em> prerequisites.</p>
+<h4 id="goal-prerequisites">Goal prerequisites</h4>
+<p>Goal prerequisites are stages that are always run before before the target stage. For example, if we run <code>bin/xhi dev_commit</code> the <code>dev_lint</code>, and <code>dev_test</code> stages will be run first to ensure the code quality is acceptable. If either prerequisite fails, <code>bin/xhi</code> exits immediately (with an exit code of 1) and the target stage is not attempted. Goal prequesites are configuired in <code>package.json.xhi_commandTable</code>.</p>
+<h4 id="environment-prequisites">Environment prequisites</h4>
+<p>These are stages that must be successfuly completed in the development environment. For example, if we run <code>bin/xhi dev_commit</code> but have not run <code>bin/xhi install</code>, the <code>install</code> stage will be run before the <code>dev_commit</code> stage. The success or failure of each stage is saved in the state file (<code>lib/xhi_state.json</code>) and the next stage is run. If the <code>install</code> stage succeeds it will not be included in future prerequisite calculations.</p>
+<p>Environment prerequisites may be invalidated. For example, if <code>bin/xhi install</code> or <code>bin/xhi upgrade</code> fail, the tool will mark the <code>install</code> stage as failed and the stage will be attempted again in the next <code>bin/xhi</code> invocation that requires it as a prerequisite.</p>
+<p>Explicitly requested stages will always run regardless of their last success status. For example, <code>bin/xhi dev_lint</code> may or may not run the <code>install</code> stage, but <code>bin/xhi install,dev_lint</code> will <em>always</em> run the <code>install</code> stage because it is explicitly listed. <code>bin/xhi help-dev_lint</code> will also run <code>install</code> since it is explicitly within the range provided (<code>help-dev_lint</code>). We can reset the status by removing the <code>stage_status_map</code> from the <code>lib/xhi_state.json</code> file.</p>
+<h3 id="exit-status">Exit status</h3>
+<p>If all the stages of a range are successful an exit status of <code>0</code> is provided. If any stage fails processing of the range stops and an exit status of <code>1</code> is provided. In Bash, the return status is available in the <code>$?</code> environment variable. If we apply minor adjustments to disable terminal interaction <code>bin/xhi</code> should be capable of integration to other tool chains.</p>
+<hr />
+<h2 id="code-style">Code Style</h2>
+<p>We use the code style presented in <a href="https://www.manning.com/books/single-page-web-applications">Single Page Web Applications - JavaScript end-to-end</a> (see reviews on <a href="http://www.amazon.com/dp/1617290750">Amazon</a>) in the upcoming 2nd edition. The <a href="https://github.com/mmikowski/hi_score/blob/master/doc/js-code-standard.adoc">full code standard</a> is found in the <code>docs</code> directory.</p>
+<hr />
+<h2 id="browser-compatibility">Browser compatibility</h2>
+<p>Our baseline compatibility is IE9+. Those supporting IE 8 have our sympathy.</p>
+<hr />
+<h2 id="deployment-platform">Deployment platform</h2>
+<p>The server component of <strong>hi_score</strong> is designed to run on industry-standard hardware, cloud instances like Amazon EC2, and containers. Our server platform is Ubuntu 16.04 LTS. Later version of Ubuntu and other distributions should work well.</p>
+<hr />
+<h2 id="development-platform">Development platform</h2>
+<h3 id="appliance">Appliance</h3>
+<p>Download the latest <a href="http://michaelmikowski.com/ova/">latest virual appliance</a> to try <code>hi_score</code> with the minimum of time and hassle. Pick the latest <code>ova2</code> image for virutal box, and the latest <code>vmx.zip</code> image for VMware or Parallels.</p>
+<h3 id="ubuntu-linux">Ubuntu Linux</h3>
+<p>If you are using Ubuntu Linux 16.04+ for your workstation or deployment everything should just work with as long as the required libraries are installed as shown below:</p>
+<pre><code>  # Install required libraries
+  sudo apt-get install build-essential git \
+    libfile-slurp-perl liblist-moreutils-perl \
+    mysql-client mysql-server net-tools \
+    openssh-server pandoc pandoc-citeproc \
+    unzip zip
+
+  # Install recommended libraries
+  sudo apt-get install apt-file htop kdiff3 \
+    meld ppa-purge sysstat vim-gtk vim-nox vim-syntax-gtk
+
+  # Install nodejs
+  curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+
+  # Install MongoDB 3.x (optional)
+  # See their website for details.</code></pre>
+<p>Most Ubuntu derivatives such as Mint or Kubuntu should work just as well.</p>
+<h3 id="other-linux">Other Linux</h3>
+<p>Other Linux distributions should generally work as long as the same libraries can be installed as with Ubuntu. It works fine on current versions of CentOS. Development libraries should be installed as shown below.</p>
+<pre><code>  $ yum install gcc gcc-c++ make openssl-devel
+  # We&#39;re probably missing git and a few other tools here</code></pre>
+<p>See <a href="https://nodejs.org/en/download/package-manager/">this guide</a> for NodeJS package installation on other Linux distros. Here is a more <a href="https://docs.google.com/spreadsheets/d/1kLIYKYRsan_nvqGSZF-xJNxMkivH7uNdd6F-xY0hAUM/edit#gid=598969125">generic guide</a> for Kubuntu and Ubuntu.</p>
+<h3 id="mac">Mac</h3>
+<p>The easiest way path to get familiar with this project on Mac is probably to use a product like Parallels or VMFusion to import the <a href="http://michaelmikowski.com/ova/">vmx.zip</a> (unzip this file before use). VirtualBox also runs on Mac but it doesn't integrate as well to the host OS as these products.</p>
+<p>One should be able to run development natively on the Mac but with some effort. We would need at the very least Bash 4+, <a href="https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/">GNU Core utilities</a>, NodeJS, Git, PanDoc, Perl <a href="File::Slurp" class="uri">File::Slurp</a>, and SSH server.</p>
+<h3 id="windows">Windows</h3>
+<p>We recommend using a virtual machine as detailed above.</p>
+<hr />
+<h2 id="vendor-assets">Vendor assets</h2>
+<p>The <code>bin/xhi setup</code> stage patches and deploys vendor assets using the <code>xhi_02_SetupMatrix</code> configuration found in the <code>package.json</code> file. This field is correlated with the with the <code>devDependencies</code> map to ensure assets are properly label, patched, distributed, and ignored by Git.</p>
+<p>Assets are copied to their destination directory with their version number appended to their names. The <code>.gitignore</code> file instructs <code>git</code> to ignore all these files as their development management is external to our project. <strong>Everytime <code>bin/xhi setup</code> is run the vendor directories are deleted and recreated</strong>.</p>
+<h3 id="executable-assets">Executable assets</h3>
+<p>Vendor executables are copied to the <code>bin/vendor</code> directory.</p>
+<h3 id="font-assets">Font assets</h3>
+<p>Vendor font files are copied to the <code>font/vendor</code> directory. These fonts are currently installed:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/font-awesome">Font Awesome</a>: Icon fonts</li>
+<li><a href="https://www.npmjs.com/package/open-sans-fontface">Open Sans</a>: OSS Font face</li>
+</ul>
+<h3 id="image-assets">Image assets</h3>
+<p>Vendor images are be copied to the <code>img/vendor</code> directory.</p>
+<h3 id="javascript-assets">JavaScript assets</h3>
+<h4 id="client-js-libraries">Client JS libraries</h4>
+<p>Client libraries are copied to the <code>js/vendor</code> directory. This makes them available to the web server. The following libraries are installed:</p>
+<ul>
+<li><a href="http://jquery.org">jQuery</a>: DOM manipulation</li>
+<li><a href="http://powercss.org">PowerCSS</a>: JS-powered CSS</li>
+<li><a href="https://www.npmjs.com/package/jquery.event.dragscroll">jQuery Plugin: event.dragscroll</a>: Inertia scroll</li>
+<li><a href="https://www.npmjs.com/package/jquery.event.gevent">jQuery Plugin: event.gevent</a>: Global events</li>
+<li><a href="https://www.npmjs.com/package/jquery.event.ue">jQuery Plugin: event.ue</a>: Touch and desktop gestures</li>
+<li><a href="https://www.npmjs.com/package/jquery.scrolli">jQuery Plugin: scrolli</a>: Scroll indicators</li>
+<li><a href="https://www.npmjs.com/package/jquery.urianchor">jQuery Plugin: urianchor</a>: SPA routing</li>
+<li><a href="https://www.npmjs.com/package/sprintf-js">SprintF</a>: Sprintf library</li>
+<li><a href="https://www.npmjs.com/package/taffydb">TaffyDB</a>: Client data management</li>
+</ul>
+<h4 id="node-js-libraries">Node JS libraries</h4>
+<p>NodeJS libraries are <strong>not</strong> copied to a <code>vendor</code> directory. We may change this if we decide to create a server distribution. The following libraries are installed:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/mongodb">clusterjs</a>: Server multiplexer</li>
+<li><a href="https://www.npmjs.com/package/express">express</a>: Minimalist Sinatra HTTP server</li>
+<li><a href="https://www.npmjs.com/package/mongodb">mongodb</a>: Official mongodb node client</li>
+<li><a href="https://www.npmjs.com/package/clusterjs">mysql2</a>: Faster mysql interface</li>
+<li><a href="https://www.npmjs.com/package/websocket">websocket</a>: Websockets interface</li>
+</ul>
+<h4 id="development-js-libraries">Development JS libraries</h4>
+<p>Developent libraries are used for testing a building code. They are <strong>not</strong> copied to a <code>vendor</code> directory. The following libraries are installed:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/coveralls">coveralls</a>: Code coverage reporting</li>
+<li><a href="https://www.npmjs.com/package/istanbul">istanbul</a>: Code coverage</li>
+<li><a href="https://www.npmjs.com/package/jsdom">jsdom</a>: DOM mock for testing</li>
+<li><a href="https://www.npmjs.com/package/eslint">eslint</a>: Linting for commit hook</li>
+<li><a href="https://www.npmjs.com/package/nodeunit">nodeunit</a>: Unit testing</li>
+<li><a href="https://www.npmjs.com/package/node-inspector">node-inspector</a>: Debugging</li>
+<li><a href="https://www.npmjs.com/package/uglifycss">uglifycss</a>: CSS minification</li>
+<li><a href="https://www.npmjs.com/package/uglifyjs">uglifyjs</a>: JS minification</li>
+</ul>
+<h3 id="styling-assets">Styling assets</h3>
+<p>Vendor CSS libraries are copied to the <code>css/vendor</code> directory. The following CSS files are installed:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/font-awesome">Font Awesome</a>: Icon font CSS</li>
+</ul>
+<h3 id="patches">Patches</h3>
+<p>The <code>xhi_02_SetupMatrix.patch_matrix</code> directs patch application.</p>
+<p>The <code>bin/xhi setup</code> stage applies patches to vendor assets. The configuration for patches are in <code>package.json</code> in the <code>xhiPatchMatrix</code> map. The patches are stored in the <code>patch</code> directory.</p>
+<p>The patch capability allows us to use great tools tweaked for our needs while maintaining the upstream source. For example, we patch <code>uglify-js</code> to support object property name compression and shuffling by <code>superpack</code>. We also patch <code>font-awesome</code> CSS files to have the correct path for our environment.</p>
+<hr />
+<h2 id="build">Build</h2>
+<p>Use <code>bin/xhi build</code> or <code>bin/xhi make</code> or <code>bin/xhi 11</code> (where 11 is the stage number) to build a distribution. The build script concatenates, compresses, and obsufucates JavaScript and CSS. It copies only the required assets into the the distribution directory (<code>build/&lt;build_id&gt;/dist</code>). The result loads faster, runs faster, and typically consumes roughly 1/50th (2%) of the development environment.</p>
+<pre><code>  $ ## Show disk usage of all development files
+  $ cd hi_score &amp;&amp; export PATH=`pwd`/bin:$PATH;
+  $ du -sh .
+    148M
+
+  $ ## Get disk usage of all distribution files
+  $ xhi build &amp;&amp; cd build/latest &amp;&amp; du -sh .
+    3.6M</code></pre>
+<p>The <code>bin/xhi build</code> stage uses uses <code>superpack</code> to analyze symbols (variable names, object properties, and labels) and replaces them with shortened and shuffled keys. The shortest keys are used for the most frequently found symbols. <code>superpack</code> reports the key-to-symbol mapping and the frequency of use which makes further optimizations by pruning code easier (see <code>build/&lt;build-number&gt;/stage/&lt;name&gt;-sp.diag</code> for mapping and key use). Projects with many object properities can be compressed an additional 50% using <code>superpack</code> and this hinders reverse-engineering of the compressed code.</p>
+<p>The build process enhances security because only a tiny, currated, obsfucated portion of our code is published and sensitive data such as SCMS metadata, documentation, lookup-maps, and development assets are omitted. We can publish these assets elsewhere at our discretion. The distribution also reduces the dozens of HTTP calls to just a few. This can reduce load time significantly as illustrated below.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Attribute</th>
+<th align="right">Original (%)</th>
+<th align="right">Minified (%)</th>
+<th align="right">Superpack (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Size</td>
+<td align="right">601,027 (100.0%)</td>
+<td align="right">215,400 ( 35.8%)</td>
+<td align="right">162,494 ( 27.1%)</td>
+</tr>
+<tr class="even">
+<td>Gzipped</td>
+<td align="right">151,716 ( 25.2%)</td>
+<td align="right">62,895 ( 10.4%)</td>
+<td align="right">57,275 ( 09.5%)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Attribute</th>
+<th align="right">Original</th>
+<th align="right">Minified (%)</th>
+<th align="right">Superpack (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>HTTP reqs</td>
+<td align="right">27 (100.0%)</td>
+<td align="right">4 ( 15.4%)</td>
+<td align="right">4 ( 15.4%)</td>
+</tr>
+<tr class="even">
+<td>Local ms</td>
+<td align="right">231 (100.0%)</td>
+<td align="right">166 ( 71.2%)</td>
+<td align="right">144 ( 62.3%)</td>
+</tr>
+<tr class="odd">
+<td>Deploy Size</td>
+<td align="right">121 MB</td>
+<td align="right">8 MB ( 6.6%)</td>
+<td align="right">8 MB ( 6.5%)</td>
+</tr>
+</tbody>
+</table>
+<p>The load time measurements were made using a local HTTP server which is almost certainly a best-case scenario. We expect to add results for a remote server in the future.</p>
+<hr />
+<h2 id="namespaces">Namespaces</h2>
+<p>Namespaces enable us to provide a suite of web apps that share a great deal of code but have instances and data cleanly isolated. Namespacing across JS and CSS can help one trace behaviors to the controlling code faster and with greater accuracy. We can open them in the Chrome browser (<code>bin/xhi install &amp;&amp; google-chrome ex*.html</code>) and use the developer tools to see this in practice.</p>
+<p>When we view Example 1 (<code>ex01.html</code>) we can open the browser development tools (press <code>&lt;shift&gt;-&lt;ctrl&gt;-i</code> or <code>&lt;shift&gt;-&lt;cmd&gt;-i</code> on a Mac), type <code>ex01</code> into the JavaScript console and press <code>&lt;return&gt;</code> to inspect that value. We can see that this single variable that contains our entire application. When we enter <code>ex02</code> we see that it is <code>undefined</code>. When we visit the Example 2 (<code>ex02.html</code>) instead we can see that <code>ex01</code> is <code>undefined</code> and <code>ex02</code> contains our app code using a similar process.</p>
+<p>We also namespace our CSS classes to avoid collisions. When we inspect the HTML of the Example 1 app we can see that nearly all classes start with an <code>ex01-</code> prefix. When we inspect Example 2 tab we find the prefix is <code>ex02-</code>. As with the JavaScript namespacing, the prefixes are hierarchical. For example, the <code>ex02-_lb_</code> class was generated for use by the <code>ex02-_lb_</code> module. During the build process selectors are shortened along with property values as long as they use the property-name structure. For example, <code>ex02-_shell_title_underscore_</code> will compress to something like <code>ex02-jp</code>.</p>
+<h2 id="contribute">Contribute</h2>
+<p>Any improvements or suggestions are welcome through the <a href="https://github.com/mmikowski/hi_score/issues">issues tracker</a>. Pull requests are especially appreciated.</p>
+<h2 id="release-notes">Release Notes</h2>
+<h3 id="copyright-c">Copyright (c)</h3>
+<p>2016, 2017 Michael S. Mikowski (mike[dot]mikowski[at]gmail[dotcom])</p>
+<h3 id="license">License</h3>
+<p>MIT</p>
+<h3 id="version-0.0.x">Version 0.0.x</h3>
+<ul>
+<li>(x) Initial preparation</li>
+</ul>
+<h3 id="version-0.1.x">Version 0.1.x</h3>
+<ul>
+<li>(x) Library updates</li>
+</ul>
+<h3 id="version-0.2.x">Version 0.2.x</h3>
+<ul>
+<li>(x) Regression and integration testing</li>
+<li>(x) Rudimentary sample app</li>
+</ul>
+<h3 id="version-0.3.x">Version 0.3.x</h3>
+<ul>
+<li>(x) Add code coverage</li>
+<li>(x) Replace <code>getDeepMapVal</code> and <code>setDeepMapVal</code> with more powerful and tested <code>getStructData</code> and <code>setStructData</code></li>
+<li>(x) Updates to <code>xhi/01_util.js</code></li>
+</ul>
+<h3 id="version-0.4.x">Version 0.4.x</h3>
+<ul>
+<li>(x) Replace <code>jscoverage</code> with much more complete and recent <code>istanbul</code></li>
+<li>(x) Add <code>cast</code> routines and detail their use</li>
+<li>(x) Consolidate utilities to increase coverage</li>
+<li>(x) Update lite-box using <code>cast</code> methods</li>
+</ul>
+<h3 id="version-0.5.x">Version 0.5.x</h3>
+<ul>
+<li>(x) Add <code>jsdom</code> to expand testing to modules that use jQuery</li>
+<li>(x) Continue regression test expansion</li>
+<li>(x) Rationalize libraries</li>
+<li>(x) Add lite-box regression tests</li>
+</ul>
+<h3 id="version-0.6.x">Version 0.6.x</h3>
+<ul>
+<li>(x) Remove vendor code from repo and auto-copy on install</li>
+<li>(x) Add native utils <code>makeThrottleFn</code> and <code>makeDebounceFn</code></li>
+<li>(x) Add links to revised code style guides</li>
+<li>(x) Replace <code>install</code> script with <code>prep-libs</code> (v0.6.17+)</li>
+</ul>
+<h3 id="version-0.7.x">Version 0.7.x</h3>
+<ul>
+<li>(x) Move to consturctor approach to easily create multiple concurrent namespaced apps using the common xhi core</li>
+<li>(x) Update index page to illustrate</li>
+<li>(x) Make example app less trivial</li>
+<li>(x) Number code library level</li>
+</ul>
+<h3 id="version-0.8.x">Version 0.8.x</h3>
+<ul>
+<li>(x) Work on build system</li>
+<li>(x) Unify shell scripts nomenclature</li>
+<li>(x) Add constructor where only selected components are added</li>
+<li>(x) Add dependency levels for xhi libs</li>
+</ul>
+<h3 id="version-0.9.x">Version 0.9.x</h3>
+<ul>
+<li>(x) Add distribution build system <code>npm run buildify</code></li>
+<li>(x) Add utilities and tests</li>
+</ul>
+<h3 id="version-1.0.x">Version 1.0.x</h3>
+<ul>
+<li>(x) Initial feature complete</li>
+<li>(x) Add utils and tests</li>
+</ul>
+<h3 id="version-1.1.x">Version 1.1.x</h3>
+<ul>
+<li>(x) Rename <code>npm run prep-libs</code> to <code>npm run setup</code></li>
+<li>(x) Rename <code>npm run cover</code> to <code>npm run coverage</code></li>
+<li>(x) Rename <code>npm run covera</code> to <code>npm run publish-coverage</code></li>
+<li>(x) Rename <code>npm run buildify</code> to <code>npm run make</code></li>
+<li>(x) Syntax refinements</li>
+<li>(x) Update libs, add express</li>
+<li>(x) Add utils and tests</li>
+</ul>
+<h3 id="version-1.2.x">Version 1.2.x</h3>
+<ul>
+<li>(x) Convert bin/setup in JavaScript</li>
+<li>(x) Configure setup completely in package.json</li>
+</ul>
+<h3 id="version-1.3.x">Version 1.3.x</h3>
+<ul>
+<li>(x) Replace JSLint with ESLint for ES2015 support</li>
+<li>(x) Convert from <code>var</code> =&gt; <code>let</code></li>
+<li>(x) Implement <code>bin/xhi</code> tool development capabilities</li>
+<li>(x) 00 xhi help</li>
+<li>(x) 01 install</li>
+<li>(x) 02 setup</li>
+<li>(x) 03 design</li>
+<li>(x) 04 dev_pull</li>
+<li>(x) 05 dev_upgrade</li>
+<li>(x) 06 dev_start</li>
+<li>(x) 07 dev_test</li>
+<li>(x) 08 dev_lint</li>
+<li>(x) 09 dev_cover</li>
+<li>(x) 10 dev_commit</li>
+<li>(x) 11 build</li>
+<li>(x) 12 publish</li>
+<li>(x) 13 dev_restart</li>
+<li>(x) 14 dev_stop</li>
+<li>(x) Tool enhancements</li>
+<li>(x) <code>bin/xhi setup</code> : Implement env prequisites and <code>lib/xhi_state.json</code></li>
+<li>(x) <code>bin/xhi setup</code> : Auto-create <code>lib/xhi_state.json</code> if required</li>
+<li>(x) <code>bin/xhi build</code> : Create build directory like <code>dist/\&lt;build-number\&gt;</code></li>
+<li>(x) <code>bin/xhi build</code> : Link <code>dist/latest</code> to latest build</li>
+<li>(x) <code>bin/xhi build</code> : Do not auto-increment build until next commit</li>
+<li>(x) <code>bin/xhi dev_cover</code> : Move to <code>dist/\&lt;build-number\&gt;</code> directories</li>
+<li>(x) Update all NPM lifecycle scripts to use <code>bin/xhi</code></li>
+<li>(x) <code>&quot;help&quot; : &quot;bin/xhi help&quot;</code></li>
+<li>(x) <code>&quot;make&quot; : &quot;bin/xhi make&quot;</code></li>
+<li>(x) <code>&quot;setup&quot;: &quot;bin/xhi setup&quot;</code></li>
+<li>(x) <code>&quot;test&quot; : &quot;bin/xhi test&quot;</code></li>
+<li>(x) Move build manifest to <code>package.json</code></li>
+<li>(x) Implement build numbers and link last build to <code>latest</code></li>
+<li>(x) Move coverage reports into build directories</li>
+<li>(x) Store build and env state in <code>lib/xhi_state.json</code></li>
+<li>(x) Create and update virtualBox <a href="http://michaelmikowski.com/ova/">OVA for development</a></li>
+<li>(x) Create and update Parallels <a href="http://michaelmikowski.com/ova/">VMX</a> image</li>
+<li>(x) Replace jslint setting from per-file to config/jslint.conf</li>
+<li>(x) Expect browser env for js/xhi libraries</li>
+<li>(x) Fix <code>js/xhi/01_util.js::makeSeriesMap</code> across timezones</li>
+<li>(x) Update code standard</li>
+<li>(x) Create AMI image for deployment</li>
+</ul>
+<h3 id="version-1.4.x">Version 1.4.x</h3>
+<ul>
+<li>(x) Add Typebomb2 example application</li>
+<li>(x) Add patch for font-awesome CSS</li>
+<li>(x) Convert build system to JavaScript using <code>package.json</code> as manifest</li>
+<li>(x) Enhance <code>js/xhi</code> libs and documentation</li>
+<li>(x) Expand doc in <code>bin/xhi help build</code></li>
+<li>(x) Revise code standards and images</li>
+<li>(x) Update docs</li>
+<li>(x) Fix <code>superpack</code> to be more reliable</li>
+<li>(x) Fix <code>bin/xhi dev_cover</code> dependencies</li>
+<li>(x) Update AMI image for deployment, add screen shot</li>
+<li>(o) Add UUID snippet from Git to build number, for example, <code>000025-1c002d</code></li>
+<li>(o) Fix commit hook conflict in <code>bin/xhi</code> run range</li>
+<li><p>(o) Update [quick reference][_03] code standard</p>
+<h3 id="version-1.5.x-next">Version 1.5.x (next)</h3></li>
+<li>(o) Update code standard quick-reference</li>
+<li>(o) Test load times using remote server</li>
+<li>(o) <code>bin/xhi</code> enhancements</li>
+<li>(o) <code>bin/xhi build</code> convert: superpack Perl to JS, use <code>package.json</code> config</li>
+<li>(o) <code>bin/xhi dev_start, prod_start</code> HTTPS : Use LetsEncrypt to use HTTPS by default</li>
+<li>(o) <code>bin/xhi dev_start, prod_start</code> HTTP/2: Configure for HTTP/2 if feasible</li>
+<li>(o) <code>bin/xhi deploy</code> implement: Add configuration and capability</li>
+<li><h2 id="o-binxhi-publish-push-to-npm">(o) <code>bin/xhi publish</code> : Push to NPM</h2>
+<h2 id="similar-projects">Similar Projects</h2>
+<p><a href="http://absurdjs.com/">absurd.js</a>, <a href="http://www.responsivejs.com/">responsive.js</a></p></li>
+</ul>
+<h2 id="end">End</h2>
+</body>
+</html>
