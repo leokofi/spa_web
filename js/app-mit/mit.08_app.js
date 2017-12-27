@@ -1,9 +1,8 @@
 /*
  * mit.08.app.js
  * @author Michael S. Mikowski - mike.mikowski@gmail.com
- * @updated Leonard K. Fiadzinu
  *
- * M!T - Minorities In Technology wip convert to xhi instances instead of modules.
+ * Typebomb 2 wip convert to xhi instances instead of modules.
  * Version 02 replaces the _css_ module with PowerCSS
  *
 */
@@ -14,8 +13,8 @@
   'use strict';
   var
     libList = [
-      'js/vendor/pcss-1.4.2.js',
-      'js/vendor/pcss.cfg-1.4.2.js',
+      'js/vendor/pcss-1.4.3.js',
+      'js/vendor/pcss.cfg-1.4.3.js',
       'js/vendor/jquery-3.2.1.js',
       'js/plugin/jquery.deferred.whenAll-1.0.0.js',
       'js/vendor/jquery.event.gevent-1.1.6.js',
@@ -37,16 +36,16 @@
       // 'js/xhi/07_shell.js',     // custom
 
       // App libs
-      'js/mit.00_root.js',
-      'js/mit.01_util.js',
-      'js/mit.02_data.js',
-      'js/mit.03_model.js',
-      'js/mit.04_utilb.js',
-      'js/mit.05_css_base.js',
-      'js/mit.05_css_lb.js',
-      'js/mit.06_css.js',
-      'js/mit.06_lb.js',
-      'js/mit.07_shell.js'
+      'js/app-mit/mit.00_root.js',
+      'js/app-mit/mit.01_util.js',
+      'js/app-mit/mit.02_data.js',
+      'js/app-mit/mit.03_model.js',
+      'js/app-mit/mit.04_utilb.js',
+      'js/app-mit/mit.05_css_base.js',
+      'js/app-mit/mit.05_css_lb.js',
+      'js/app-mit/mit.06_css.js',
+      'js/app-mit/mit.06_lb.js',
+      'js/app-mit/mit.07_shell.js'
     ],
     libCount    = libList.length,
     loadCount   = 0,

@@ -1,9 +1,8 @@
 /*
  * mit-03_model.js
  * @author Michael S. Mikowski - mike.mikowski@gmail.com
- * @update Leonard K. Fiadzinu
  *
- * M!T - Minorities In Technology, model component.
+ * Typebomb 2 model component.
 */
 /*global $, mit*/
 // == BEGIN MODULE mit._03_model_ =====================================

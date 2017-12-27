@@ -22,29 +22,8 @@ mit._07_shell_ = (function () {
     __p       = __util._makeReplaceFn_( '_p_', aKey ),
 
     configMap = {
-      _main_html_  : __p(
-        '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" '
-        + 'class="{_p_}-_shell_bg_svg_" '
-        + 'viewbox="0 0 100 100" preserveAspectRatio="none">'
-        + '<path d="M 0,0 40,100 0,100 M 100,0 60,100 100,100"></path>'
-        + '</svg>'
-        + '<div class="{_p_}-_shell_title_">M!T - Miniorites In Technology'
-        + '</div>'
-        + '<!-- <div class="{_p_}-_shell_subtext_"></div> -->'
-        + '<div class="{_p_}-_shell_hi_score_">High Score</div>'
-        + '<div class="{_p_}-_shell_level_">'
-        + '<div class="{_p_}-_shell_level_label_">Level</div>'
-        + '<div class="{_p_}-_shell_level_count_"></div>'
-        + '</div>'
-        + '<div class="{_p_}-_shell_lives_">'
-        + '<div class="{_p_}-_shell_lives_count_"></div>'
-        + '<div class="{_p_}-_shell_lives_gfx_"></div>'
-        + '</div>'
-        + '<div class="{_p_}-_shell_typebox_"></div>'
-        + '<div class="{_p_}-_shell_score_">'
-        + '<div class="{_p_}-_shell_score_label_">Score</div>'
-        + '<div class="{_p_}-_shell_score_int_"></div>'
-        + '</div>'
+      _main_tmplt_  : __p(
+
       ),
       _bomb_html_  : __p(
         '<div id="{_id_}" class="{_p_}-_shell_bomb_">{_label_str_}</div>'
@@ -420,7 +399,7 @@ mit._07_shell_ = (function () {
     mit._06_css_._initModuleFn_();
 
     // Set up screen
-    $body[ vMap._html_ ]( configMap._main_html_ );
+    $body[ vMap._html_ ]( configMap._main_tmplt_ );
     set$MapFn( $body );
 
     // Begin browser event bindings
@@ -446,9 +425,9 @@ mit._07_shell_ = (function () {
 
     // Begin greet player
     mit._06_lb_._showLbFn_({
-      _title_html_ : 'Welcome to M!T - Minorities In Technology',
+      _title_html_ : 'Welcome to Typebomb 2!',
       _content_html_ :
-        '<p>Please look around and let us know if we have left something out</p>'
+        '<p>Have fun while learning to type!</p>'
 
         + '<p>Click anywhere outside this lightbox to close it. '
         + 'Then click on the pulldown at the top-right to select a level.'

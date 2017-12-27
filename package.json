@@ -837,17 +837,17 @@
                 "xhi_js_list"
               ]
             },
-            "js/mit.00_root.js",
-            "js/mit.01_util.js",
-            "js/mit.02_data.js",
-            "js/mit.03_model.js",
-            "js/mit.04_utilb.js",
-            "js/mit.05_css_base.js",
-            "js/mit.05_css_lb.js",
-            "js/mit.06_css.js",
-            "js/mit.06_lb.js",
-            "js/mit.07_shell.js",
-            "js/mit.08_app-build.js"
+            "js/app-mit/mit.00_root.js",
+            "js/app-mit/mit.01_util.js",
+            "js/app-mit/mit.02_data.js",
+            "js/app-mit/mit.03_model.js",
+            "js/app-mit/mit.04_utilb.js",
+            "js/app-mit/mit.05_css_base.js",
+            "js/app-mit/mit.05_css_lb.js",
+            "js/app-mit/mit.06_css.js",
+            "js/app-mit/mit.06_lb.js",
+            "js/app-mit/mit.07_shell.js",
+            "js/app-mit/mit.08_app-build.js"
           ],
           "do_vendor": true
         },
@@ -888,7 +888,17 @@
                 "xhi_js_list"
               ]
             },
-            "js/chobits.08_app-build.js"
+            "js/app-chobits/chobits.00_root.js",
+            "js/app-chobits/chobits.01_util.js",
+            "js/app-chobits/chobits.02_data.js",
+            "js/app-chobits/chobits.03_model.js",
+            "js/app-chobits/chobits.04_utilb.js",
+            "js/app-chobits/chobits.05_css_base.js",
+            "js/app-chobits/chobits.05_css_lb.js",
+            "js/app-chobits/chobits.06_css.js",
+            "js/app-chobits/chobits.06_lb.js",
+            "js/app-chobits/chobits.07_shell.js",
+            "js/app-chobits/chobits.08_app-build.js"
           ],
           "do_vendor": true
         },

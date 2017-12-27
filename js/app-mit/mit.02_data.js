@@ -1,9 +1,8 @@
 /*
  * mit-02_data.js
  * @author Michael S. Mikowski - mike.mikowski@gmail.com
- * @update Leonard K. Fiadzinu
  *
- * M!T - Minorities in Technology data component.
+ * Typebomb 2 data component.
 */
 /*global $, mit*/
 
