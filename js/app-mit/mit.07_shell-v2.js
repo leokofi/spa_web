@@ -22,6 +22,12 @@ mit._07_shell_ = (function () {
     __p       = __util._makeReplaceFn_( '_p_', aKey ),
 	
 	configMap = {
+		anchor_schema_map : {
+			// example using chat
+			// chat : { opened : true, closed : true }
+			page : { aboutus : true, companies : true, events : true, community : true }
+			//_page: {},
+		},
 		_main_tmplt_  : __p(
 		  '<!-- start main shell header section -->'
 		+ '<div class="{_p_}-main-shell-header">'
@@ -61,7 +67,7 @@ setJqueryMap = function () {
 	
 	jqueryMap = {
 		$container  : $container,
-		$nav        : $container.find('{_p_}-main-shell-nav')	
+		$nav        : $container.find( '{_p_}-main-shell-nav' )	
 	};
 };
 // End DOM method /setJqueryMap/  
@@ -122,7 +128,7 @@ setJqueryMap = function () {
 		}
 		catch ( error ) {
 			// replace URI with exiting state
-			$.uriAnchor.setAnchor( stateMap.anchor_map,null,true );
+			$.uriAnchor.setAnchor( stateMap.anchor_map, null, true );
 			bool_return = false;
 		}
 		// End attempt to update URI...
@@ -167,13 +173,25 @@ setJqueryMap = function () {
 		_s_nav_previous = anchor_map_previous._s_nav;
 		_s_nav_proposed = anchor_map_proposed._s_nav;
 		
-		// begin adjust chat component if changed
+		// begin adjust nav component if changed
 		if ( ! anchor_map_previous 
 		  || _s_nav_previous !== _s_nav_proposed
 		) {
 			s_nav_proposed = anchor_map_proposed.nav;
-			switch () {}
+			switch ( s_nav_proposed ) {
+				case 'aboutus' :
+				  is_ok = mit.nav.setNavPosition( 'aboutus' );
+				break;
+				case 'companies' :
+				  is_ok = mit.nav.setNavPosition( 'companies' );
+				break;
+				default :
+				  mit.nav.setNavPosition( 'home' );
+				  delete anchor_map_proposed.nav;
+				  $.uriAnchor.setAnchor( anchor_map_proposed, null, true );
+			}
 		}
+		// End adjust nav component if changed
   };
 	
 }());
