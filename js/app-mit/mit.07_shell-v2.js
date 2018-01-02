@@ -17,8 +17,8 @@ mit._07_shell_ = (function () {
 	__$sub    = $[ vMap._gevent_ ][ vMap._subscribe_ ],
 	
 	__util    = aMap._01_util_,
-    //__logObj  = __util._getLogObj_(),
-    //__logMsg  = __logObj._logMsg_,
+    __logObj  = __util._getLogObj_(),
+    __logMsg  = __logObj._logMsg_,
     __p       = __util._makeReplaceFn_( '_p_', aKey ),
 	
 	configMap = {
@@ -137,6 +137,31 @@ setJqueryMap = function () {
 		return bool_return;
   };
   
+ // BEGIN DOM method /set$MapFn/
+
+function set$MapFn ( $body ) {
+  var
+    $header = $body[ vMap._find_ ]( __p( '{_p_}-main-shell-header' ) ),
+    $content = $body[ vMap._find_ ]( __p( '{_p_}-main-shell-content' ) ),
+    $footer = $body[ vMap._find_ ]( __p( '{_p_}-main-shell-footer' ) ),
+    
+    $sell_fields = $( [
+	    $header[ vMap._get_ ](__0),
+	    $content[ vMap._get_ ](__0),
+	    $footer[ vMap._get_ ](__0)
+    ] );
+
+   $Map = {
+    _$body_    : $body,
+    _$sell_fields_ : $sell_fields,
+    _$content_     : $content,
+    _footer_       : $footer
+   
+   };
+
+}
+// . END DOM method /set$MapFn/
+	
   // End DOM method /changeAnchorPart/
   //--------------------- END DOM METHODS ----------------------
   
@@ -220,7 +245,32 @@ setSiteAnchor = function ( position_type ) {
 //----------------------- END CALLBACKS ----------------------
 	
 //------------------- BEGIN PUBLIC METHODS -------------------
+// BEGIN public method /initModuleFn/
+
+function initModuleFn () {
+  var $body = $( 'body' );
+
+  // Initialize styling
+	mit._06_css_._initModuleFn_();
+
+// set up screen
+  $body[ vMap._html_ ]( configMap._main_tmplt_ );
+  set$MapFn( $body );
+
+  aMap._03_model_._initModuleFn_();
 	
+  // Begin greeting of visitor
+  mit._06_lb_._showLbFn_({
+    _title_html_ : 'Welcome to M!T - Minorities In Technology',
+    _content_html_ :
+	  '<p>Educating, connect, Empowering</p>'
+  });
+	
+
+}	
+	
+// . END public method /initModuleFn/
+  return { _initModuleFn_ : initModuleFn };
 //------------------- END PUBLIC METHODS ---------------------
 	
 }());
