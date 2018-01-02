@@ -17,8 +17,8 @@ mit._07_shell_ = (function () {
 	__$sub    = $[ vMap._gevent_ ][ vMap._subscribe_ ],
 	
 	__util    = aMap._01_util_,
-    __logObj  = __util._getLogObj_(),
-    __logMsg  = __logObj._logMsg_,
+    //__logObj  = __util._getLogObj_(),
+    //__logMsg  = __logObj._logMsg_,
     __p       = __util._makeReplaceFn_( '_p_', aKey ),
 	
 	configMap = {
@@ -47,6 +47,7 @@ mit._07_shell_ = (function () {
 		anchor_map  : {}
 	},
 	jqueryMap = {},
+        $Map,
 	
 	copyAnchorMap, setJqueryMap, changeAnchorPart,
 	onResize, onHashchange,
@@ -192,7 +193,35 @@ setJqueryMap = function () {
 			}
 		}
 		// End adjust nav component if changed
+	  // Begin revert anchor if slider chanbe denied
+	  if ( ! is_ok ) {
+		  if ( anchor_map_previous ) {
+			  $.uriAnchor.setAnchor( anchor_map_previous, null, true );
+			  stateMap.anchor_map = anchor_map_previous;
+		  }
+		  else {
+			  delete anchor_map_proposed.nav;
+			  $.urinchor.setAnchor( anchor_map_proposed, null, true );
+		  }
+	  }
+	  // End revert anchor if nave change denied
+	  return false;
   };
+// End Event handler /onHashchange/
+
+//---------------------- BEGIN CALLBACKS ---------------------
+// Begin callback method /setNavAnchor/
+
+setSiteAnchor = function ( position_type ) {
+  return changeAnchorPart({ nav : position_type });
+};
+	
+// End callback method /setNavAnchor/
+//----------------------- END CALLBACKS ----------------------
+	
+//------------------- BEGIN PUBLIC METHODS -------------------
+	
+//------------------- END PUBLIC METHODS ---------------------
 	
 }());
 // == . END MODULE mit._07_shell_ ====================================
