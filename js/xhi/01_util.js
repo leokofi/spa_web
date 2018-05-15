@@ -4,11 +4,11 @@
  *
  * Use      : xhi._01_util_._makeInstanceFn_( app_map, option_map );
  * Synopsis : Add _01_util_ capabilities to app_map
- * Provides : Utilities which do not require jQuery or a browser
+ * Provides : Utilities which do not require jQuery (xhiJQ) or a browser
  * Requires : aMap (app map) with symbols from 00_root._makeInstanceFn_()
  *
 */
-/*global xhi */
+/*global xhi, xhiJQ */
 // == BEGIN MODULE xhi._01_util_ ======================================
 xhi._01_util_ = (function () {
   'use strict';
@@ -239,18 +239,18 @@ xhi._01_util_ = (function () {
 
     // BEGIN Public prereq method /castJQ/
     // Summary   : castJQ( <data>, <alt_data> )
-    // Purpose   : Cast a jQuery object
+    // Purpose   : Cast a jQuery (xhiJQ) object
     // Example   : castJQ( $top_box ); // returns $top_box
     // Arguments : (positional)
-    //   <data>     - data to cast as jQuery object
+    //   <data>     - data to cast as xhiJQ object
     //   <alt_data> - alternate value to return
     // Returns   :
-    //   <data> if it is a jQuery object, <alt_data> otherwise
+    //   <data> if it is a xhiJQ object, <alt_data> otherwise
     // Throws    : none
     //
     function castJQ ( data, alt_data ) {
       if ( stateMap._has_jq_ ) {
-        return ( data && data instanceof jQuery ) ? data : alt_data;
+        return ( data && data instanceof xhiJQ ) ? data : alt_data;
       }
       /* istanbul ignore next */
       return alt_data;
@@ -538,6 +538,7 @@ xhi._01_util_ = (function () {
     // BEGIN Public prereq method /getNowMs/
     // Purpose   : Get timestamp
     // Example   : getNowMs(); // returns 1486283077968
+    // Arguments : do_local_time when true will subtract the TZ offset
     // Returns   : The current timestamp in milliseconds
     // Throws    : none
     //
@@ -545,9 +546,15 @@ xhi._01_util_ = (function () {
     //   in NodeJS, and I have confirmed this provides almost the
     //   the same performance in that env as a raw Date.now() call.
     //
-    function getNowMs () {
-      if ( configMap._get_now_fn_ ) { return configMap._get_now_fn_(); }
-      return + new __Date();
+    function getNowMs ( do_local_time ) {
+      var date_obj;
+      if ( do_local_time ) {
+        date_obj = new Date();
+        return date_obj.getTime() - ( date_obj.getTimezoneOffset() * 60000);
+      }
+
+      return configMap._get_now_fn_
+        ? configMap._get_now_fn_() : +new __Date();
     }
     // . END Public prereq method /getNowMs/
 
@@ -1343,17 +1350,20 @@ xhi._01_util_ = (function () {
     //      1 === HH
     //      2 === HH:MM
     //      3 === HH:MM:SS
+    //   2 - do am/pm flag (default: false)
+    //   3 - use local time (default: false)
     // Returns   : String
     // Cautions  :
     //   Remember to use your local timezone offset if you want to
     //   show local time. Example:
-    //       tz_offset_ms = date_obj.getTimezoneOffset() * 60000;
-    //       local_ms     = raw_utc_ms + tz_offset_ms;
+    //     local_ms = getNowMs( true )
     //
-    function makeClockStr ( arg_time_ms, arg_time_idx ) {
+    function makeClockStr ( arg_time_ms, arg_time_idx, arg_do_ampm, arg_do_local ) {
       var
-        time_ms   = castInt( arg_time_ms,  __0 ),
+        do_local  = castBool( arg_do_local, __false ),
+        time_ms   = castInt( arg_time_ms, getNowMs( do_local ) ),
         time_idx  = castInt( arg_time_idx, __3 ),
+        do_ampm   = castBool( arg_do_ampm, __false ),
         abs_idx   = __makeAbsNumFn( time_idx  ),
 
         sec_ms    = configMap._sec_ms_,
@@ -1374,8 +1384,10 @@ xhi._01_util_ = (function () {
         mns         = makePadNumStr,
 
         time_list   = [],
+        suffix_str  = __blank,
+
         scratch_str
-      ;
+        ;
 
       if ( abs_idx === 0 || abs_idx > 3 ) { return __blank; }
 
@@ -1400,7 +1412,19 @@ xhi._01_util_ = (function () {
         time_list[ __push ]( scratch_str );
       }
 
-      return time_list[ __join ]( ':' );
+      if ( do_ampm ) {
+        if ( time_list[__0] >= 12 ) {
+          suffix_str = ' PM';
+          if ( time_list[__0] > 12 ) {
+            time_list[__0] -= 12;
+          }
+        }
+        else {
+          suffix_str = ' AM';
+        }
+      }
+
+      return time_list[ __join ]( ':' ) + suffix_str;
     }
     // . END Public method /makeClockStr/
 
@@ -1499,14 +1523,15 @@ xhi._01_util_ = (function () {
         yrs_int,   mon_int,   day_int,
         date_list, date_str,  time_ms,
         time_str
-      ;
+        ;
+
+      if ( ! date_obj ) {
+        date_obj = new __Date();
+      }
 
       if ( date_ms ) {
-        // new __Date( ms ) does not work in node 4.4.3
-        date_obj = new __Date();
         date_obj.setTime( date_ms );
       }
-      if ( ! date_obj ) { return __blank; }
 
       yrs_int = __Num( date_obj.getYear()  ) + configMap._offset_yr_;
       mon_int = __Num( date_obj.getMonth() ) + __1;
@@ -2552,7 +2577,7 @@ xhi._01_util_ = (function () {
       };
       /* istanbul ignore next */
       try {
-        stateMap._has_jq_ = !! jQuery;
+        stateMap._has_jq_ = !! xhiJQ;
       }
       catch ( error ) {
         stateMap._has_jq_ = __false;
